@@ -1,0 +1,19 @@
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Scanner un article</title>
+</head>
+<body>
+
+<h2>Scanner un produit</h2>
+
+<form method="POST" action="/scan">
+    <label for="code_barre">Code barre (EAN) :</label><br>
+    <input type="text" id="code_barre" name="code_barre" required autofocus><br><br>
+
+
+    <input type="submit" value="Envoyer">
+</form>
+
+</body>
+</html>
