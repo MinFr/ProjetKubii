@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta charset="UTF-8">
+   <title>Commande LED</title>
+</head>
+<body>
+
+<h3>Scanner un article </h3>
+
+<form method="POST" action="/gestionled">
+   <label>Code barre:</label><br>
+   <input type="text" name="code_barre" required><br><br>
+
+   <label>Quantité:</label><br>
+   <input type="number" name="quantite" value="1" required><br><br>
+
+   <label>Personne:</label><br>
+   <input type="text" name="personne" required><br><br>
+
+   <label>Localisation:</label><br>
+   <input type="text" name="localisation" required><br><br>
+
+   <label>Nom du produit:</label><br>
+   <input type="text" name="nomproduit" required><br><br>
+
+   <label for="pin">Choisissez un PIN :</label><br>
+   <select name="pin" required>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="20">20</option>
+      <option value="22">22</option>
+      <option value="23">23</option>
+      <option value="24">24</option>
+   </select><br><br>
+
+   <input type="submit" value="Envoyer">
+</form>
+
+<br>
+
+<div th:if="${code_barre}">
+   <p><strong>Dernière commande envoyée :</strong></p>
+   <ul>
+       <li>Code barre : <span th:text="${code_barre}"></span></li>
+       <li>Quantité : <span th:text="${quantite}"></span></li>
+       <li>Personne : <span th:text="${personne}"></span></li>
+       <li>Localisation : <span th:text="${localisation}"></span></li>
+       <li>Nom du produit : <span th:text="${nomproduit}"></span></li>
+       <li>PIN utilisé : <span th:text="${pin}"></span></li>
+   </ul>
+</div>
+
+</body>
+</html>
+

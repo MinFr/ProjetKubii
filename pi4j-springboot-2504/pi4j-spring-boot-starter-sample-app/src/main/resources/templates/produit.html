@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Produit scanné</title>
+</head>
+<body>
+
+<h2>Résultat du scan</h2>
+
+<div th:if="${produit}">
+    <ul>
+        <li><strong>EAN :</strong> <span th:text="${produit.EAN}"></span></li>
+        <li><strong>Quantité :</strong> <span th:text="${produit.quantite}"></span></li>
+        <li><strong>Personne :</strong> <span th:text="${produit.personne}"></span></li>
+        <li><strong>Localisation :</strong> <span th:text="${produit.localisation}"></span></li>
+        <li><strong>Nom du produit :</strong> <span th:text="${produit.nomProduit}"></span></li>
+        <li><strong>Boîtier à clignoter :</strong> <span th:text="${produit.boitierAClignoter}"></span></li>
+    </ul>
+</div>
+
+
+<div th:if="${error}">
+    <p style="color:red;" th:text="${error}"></p>
+</div>
+
+
+</body>
+</html>

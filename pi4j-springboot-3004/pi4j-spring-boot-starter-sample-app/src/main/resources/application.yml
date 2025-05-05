@@ -1,0 +1,35 @@
+management:
+  endpoints:
+    enabled-by-default: true
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  application:
+    name: pi4j-spring-boot-sample-app
+
+server.port=8080:
+server.tomcat.uri-encoding=UTF-8:
+
+server.tomcat.accesslog.enabled=true:
+
+server.tomcat.accesslog.suffix=.log:
+server.tomcat.accesslog.prefix=access_log:
+server.tomcat.accesslog.file-date-format=.yyyy-MM-dd:
+
+server.tomcat.basedir=tomcat:
+server.tomcat.accesslog.directory=logs:
+
+server.tomcat.accesslog.pattern=common:
+
+logging.level.org.apache.tomcat=DEBUG:
+logging.level.org.apache.catalina=DEBUG:
+
+
+
+spring.data.mongodb.database=colisdb:
+spring.data.mongodb.uri=mongodb://localhost:27017:
+
