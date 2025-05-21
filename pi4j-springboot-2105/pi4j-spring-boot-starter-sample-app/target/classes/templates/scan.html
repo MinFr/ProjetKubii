@@ -1,0 +1,120 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .cagette-box {
+            border: 1px solid #999;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            background-color: #f9f9f9;
+        }
+        li { margin-bottom: 8px; }
+        .complet { color: green; font-weight: bold; }
+        .incomplet { color: red; font-weight: bold; }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("scannerInput");
+
+            input.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    const code = input.value.trim();
+                    input.value = "";
+
+                    const payload = {
+                        bonLivraison: "",
+                        ean13: code
+                    };
+
+                    fetch('/api/scan', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(res => res.text())
+                    .then(msg => {
+                        console.log("[SCAN]", msg);
+                        alert(msg);
+                        refreshData();
+                    })
+                    .catch(err => {
+                        console.error("[ERROR]", err);
+                        alert("Erreur lors du scan !");
+                    });
+                }
+            });
+
+            refreshData();
+        });
+
+        function refreshData() {
+            fetch('/api/active')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById("bonList");
+                    container.innerHTML = '';
+
+                    for (let cagette in data) {
+                        const bl = data[cagette];
+                        const div = document.createElement("div");
+                        div.className = "cagette-box";
+
+                        const header = `
+                            <h3>📦 Cagette ${cagette} - BL: ${bl.bon_livraison}</h3>
+                            <p><strong>Client:</strong> ${bl.nom_client}</p>
+                            <p><strong>Opérateur:</strong> ${bl.id_operateur || '❌ Non assigné'}</p>
+                            <p><strong>Contrôleur:</strong> ${bl.id_controller || '❌ Non validé'}</p>
+                        `;
+
+                        let articles = "<ul>";
+                        for (let a of bl.commande_colis_articles) {
+                            const statusClass = a.etat_colis === 'complet' ? 'complet' : 'incomplet';
+                            articles += `<li class="${statusClass}">
+                                <strong>Nom produit:</strong> ${a.name_product}<br>
+                                <strong>EAN:</strong> ${a.ean13_product}<br>
+                                <strong>Quantité:</strong> ${a.qte_scannee}/${a.qty}<br>
+                                <strong>État colis:</strong> ${a.etat_colis}<br>
+                                <strong>ID Colis:</strong> ${a.id_colis}<br>
+                                <strong>Emp Code:</strong> ${a.emp_code}
+                            </li>`;
+                        }
+                        articles += "</ul>";
+
+                        div.innerHTML = header + articles;
+                        container.appendChild(div);
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+<h1>📋 Interface de Scan (BL + Articles)</h1>
+
+<p><strong>Étapes :</strong></p>
+<ol>
+    <li>Scanner un ou plusieurs bons de livraison (BL)</li>
+    <li>Scanner le code <code>operateurX</code> pour activer le mode opérateur</li>
+    <li>Scanner les articles (aucun besoin de choisir BL)</li>
+    <li>Scanner le code <code>controleurX</code> après que tous les articles soient complets</li>
+</ol>
+
+<input type="text" id="scannerInput" placeholder="Scanner un code..." autofocus />
+
+<hr/>
+<div id="bonList">
+    <!-- Les données des cagettes s'affichent ici -->
+</div>
+</body>
+</html>
+
+
+
+
+
